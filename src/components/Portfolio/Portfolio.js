@@ -6,7 +6,7 @@ import DataTable from './DataTable';
 
 function Portfolio () {
     return (
-        <div className='pt-20 bg-[#030015] h-full'>
+        <div className='pt-20 bg-[#030015] h-full w-full'>
             <DataTable />
             <QuestionSection />
             <JoinCommunity />
