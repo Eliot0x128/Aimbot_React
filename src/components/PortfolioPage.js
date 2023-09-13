@@ -3,20 +3,19 @@ import '../css/project.css'
 import '../css/animations.css';
 
 import Navbar from './Navbar';
-import ClaimRewards from './ClaimRewards/ClaimMain';
 import Portfolio from './Portfolio/Portfolio';
 import Footer from './Footer';
 
-function Landing () {
+function PortfolioPage () {
     return (
       <div className="App">
         <div className='relative w-full h-full body'>
           <Navbar />
-          <ClaimRewards />
+          <Portfolio />
           <Footer />
         </div>
       </div>
     );
 }
 
-export default Landing;
+export default PortfolioPage;

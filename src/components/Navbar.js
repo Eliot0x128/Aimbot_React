@@ -1,13 +1,14 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom'
 
 const navigation = [
   { name: 'Why AIBOT', href: '#', current: false },
   { name: 'Roadmap', href: '#', current: false },
   { name: 'Features', href: '#', current: false },
   { name: 'Tokenomics', href: '#', current: false },
-  { name: 'AI Portfolio', href: '#', current: false },
+  { name: 'AI Portfolio', href: '/portfolio', current: false },
 ]
 
 function classNames(...classes) {
@@ -59,9 +60,9 @@ export default function Example() {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    <button className="sm:block hidden ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-6 rounded-md">
+                    <Link to="/" className="sm:block hidden ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-6 rounded-md">
                         Claim Rewards
-                    </button>
+                    </Link>
                 </div>
               </div>
 

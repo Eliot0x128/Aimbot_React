@@ -23,6 +23,36 @@
 
 .claim_section {
     background-image: radial-gradient(circle, rgba(3, 0, 20, .4) 14%, #030015 63%), url(https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64bc3517c380dc07d9ab59bc_bg-2.svg);
-    background-position: 0 0, 50% 130%;
+    background-position: 0, 0, 50% 130%;
     background-size: auto, cover;
 }
+
+.social-grid-content-telegram {
+    background-image: url(	https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64ca74675481996cd68ff61c_telegram%20pic.png), linear-gradient(to right, #2aabee, #229ed9);
+    background-position: 250px -40px, 0 0;
+    background-repeat: no-repeat, repeat;
+    background-size: 400px, auto;
+    text-decoration: none;
+}
+
+.social-grid-content-twitter {
+    background-image: url(https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64ca731fe9565f565d4c34e6_twitter-pic.png), linear-gradient(to right, #2aabee, #229ed9);
+    background-position: 250px -40px, 0 0;
+    background-repeat: no-repeat, repeat;
+    background-size: 400px, auto;
+    text-decoration: none;
+}
+
+/* --------------------------------- */
+  
+  #myTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    font-size: 18px; /* Increase font-size */
+    color: white;
+  }
+  
+  #myTable th, #myTable td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+  }
