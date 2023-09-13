@@ -1,0 +1,28 @@
+.body {
+    font-family: var(--e-global-typography-primary-font-family),Sans-serif;
+}
+/* _lg */
+@media only screen and (max-width: 1440px) {
+
+}
+
+/* _md */
+@media only screen and (max-width: 1020px) {
+
+}
+
+/* _sm */
+@media only screen and (max-width: 840px) {
+
+}
+
+/* _mobile */
+@media only screen and (max-width: 500px) {
+
+}
+
+.claim_section {
+    background-image: radial-gradient(circle, rgba(3, 0, 20, .4) 14%, #030015 63%), url(https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64bc3517c380dc07d9ab59bc_bg-2.svg);
+    background-position: 0 0, 50% 130%;
+    background-size: auto, cover;
+}
