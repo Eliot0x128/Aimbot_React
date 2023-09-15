@@ -57,6 +57,7 @@ function DataTable() {
       <button className="mb-10 ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-10 rounded-md">
         <div className='flex flex-row items-center gap-3 text-lg'><FaRecycle />Refresh Portfolio</div>
       </button>
+      {/* Current Holdings Table */}
       <p className='mb-6 text-3xl font-bold text-white'>Current Holdings</p>
       <p className='mb-20 text-xl text-white'>Check our AI holdings in real-time. The list is updated after new buys or sells.</p>
     
@@ -86,7 +87,40 @@ function DataTable() {
                {tableContent}
             </tbody>
         </table>
-        
+        <Pagination />
+        </div>
+       </div>
+
+       {/* AI Sells */}
+      <p className='mt-20 mb-6 text-3xl font-bold text-white'>AI Sells</p>
+      <p className='mb-20 text-xl text-white'>Check all the sells from our AI. The list is updated every few minutes.</p>
+    
+      <div className='flex items-center justify-center'>
+        <div className='w-2/3'>
+        <div className='flex flex-col justify-between mb-5 md:flex-row'>
+            <p className='text-lg font-medium text-white'>Show 10 entries</p>
+            <div className='flex flex-row items-center mt-10 md:mt-0'>
+                <p className='mr-3 font-medium text-white text-md'>Search:</p>
+                <input className="bg-transparent border border-white text-white rounded-md w-[200px] h-[30px]" type="text" id="myInput" onChange={filterFunction} placeholder=""></input>
+            </div>
+        </div>
+
+        <table id="myTable">
+            <thead>
+                <tr className="header">
+                    <td>Token</td>
+                    <td>Token Value</td>
+                    <td className=''>Price Per Token</td>
+                    <td className=''>Wallet</td>
+                    <td className=''>Buy Time</td>
+                    <td className=''>Current Profit</td>
+                    <td className=''>Etherscan</td>
+                </tr>
+            </thead>
+            <tbody>
+               {tableContent}
+            </tbody>
+        </table>
         <Pagination />
         </div>
        </div>

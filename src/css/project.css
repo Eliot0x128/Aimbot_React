@@ -81,6 +81,11 @@
   background-image: linear-gradient(5deg, rgba(195, 180, 235, .02), rgba(156, 133, 209, .31));
 }
 
+.claim_eth_box {
+  box-shadow: inset 0 0 20px 5px rgba(191, 151, 255, .44);
+  border: 1px solid #9b83d0;
+}
+
 /* --------------------------------- */
   
   #myTable {
