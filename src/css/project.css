@@ -99,3 +99,15 @@
     text-align: left; /* Left-align text */
     padding: 10px; /* Add padding */
   }
+
+  #myTable1 {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    font-size: 18px; /* Increase font-size */
+    color: white;
+  }
+  
+  #myTable1 th, #myTable1 td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+  }
