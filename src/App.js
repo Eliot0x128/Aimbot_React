@@ -1,5 +1,5 @@
 import './App.css';
-import Landing from './components/Landing';
+import ClaimEth from './components/ClaimEth';
 import PortfolioPage from './components/PortfolioPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -7,8 +7,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Landing />}></Route>
-        <Route path='/portfolio' element={<PortfolioPage />}></Route>
+        <Route path='/' element={<PortfolioPage />}></Route>
+        <Route path='/claimeth' element={<ClaimEth />}></Route>
       </Routes>
     </BrowserRouter>
   );

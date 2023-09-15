@@ -13,6 +13,9 @@ function PortfolioPage () {
           <Navbar />
           <Portfolio />
           <Footer />
+          <div className='flex justify-center w-full'>
+              <div className='block gradient-1'></div>
+          </div>
         </div>
       </div>
     );

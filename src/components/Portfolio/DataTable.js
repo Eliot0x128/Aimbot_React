@@ -52,7 +52,7 @@ function DataTable() {
     }
 
   return (
-    <div className="bg-[#030015] h-full claim_section">
+    <div className="bg-[#030015] h-full claim_section_portfolio">
       <p className='text-[#C0B0E9] font-bold text-5xl mb-12'>AI Portfolio Tracker</p>
       <button className="mb-10 ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-10 rounded-md">
         <div className='flex flex-row items-center gap-3 text-lg'><FaRecycle />Refresh Portfolio</div>
