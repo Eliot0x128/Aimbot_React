@@ -40,7 +40,7 @@ function RewardPool () {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col items-center justify-center mt-2 mt-20 md:mt-0 md:flex-row gap-7'>
+            <div className='flex flex-col items-center justify-center mt-20 md:mt-2 md:flex-row gap-7'>
                 <div className='flex flex-col w-[300px]'>
                     <div className='flex flex-col p-4 text-left rounded-md metrics_item_down'>
                         <p className='text-sm font-bold'>GENERATED FROM AI BOT</p>
