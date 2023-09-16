@@ -89,8 +89,6 @@ function DataTables() {
                     </tr>
                 )];
             }
-            console.log('1095u095810598589105108950895108510851089512');
-            console.log(content1);
         }
 
         setTableContent(content);
