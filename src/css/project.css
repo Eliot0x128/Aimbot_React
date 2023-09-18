@@ -45,7 +45,7 @@
 
 .social-grid-content-telegram {
     background-image: url(	https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64ca74675481996cd68ff61c_telegram%20pic.png), linear-gradient(to right, #2aabee, #229ed9);
-    background-position: 250px -40px, 0 0;
+    background-position: 350px -40px, 0 0;
     background-repeat: no-repeat, repeat;
     background-size: 400px, auto;
     text-decoration: none;
@@ -53,7 +53,7 @@
 
 .social-grid-content-twitter {
     background-image: url(https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64ca731fe9565f565d4c34e6_twitter-pic.png), linear-gradient(to right, #2aabee, #229ed9);
-    background-position: 250px -40px, 0 0;
+    background-position: 350px -40px, 0 0;
     background-repeat: no-repeat, repeat;
     background-size: 400px, auto;
     text-decoration: none;

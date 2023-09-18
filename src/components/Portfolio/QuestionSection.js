@@ -12,7 +12,7 @@ function QuestionSection () {
                 <p className='mb-5 text-xl text-white'>To calculate your share of rewards, simply do:</p>
                 <p className='mb-5 text-xl text-white'>[ETH in reward wallet] * (your token balance / total supply)</p>
                 <p className='mb-5 text-xl text-white'>Or check it from the dashboard</p>
-                <button className="w-[200px] ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-6 rounded-md">
+                <button className="w-[200px] font-bold ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] py-2 px-6 rounded-md">
                     Claim Rewards
                 </button>
             </div>
