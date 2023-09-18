@@ -4,7 +4,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Why AIBOT', href: '#', current: false },
+  { name: 'Why AIBOT', href: '/Landing', current: false },
   { name: 'Roadmap', href: '#', current: false },
   { name: 'Features', href: '#', current: false },
   { name: 'Tokenomics', href: '#', current: false },

@@ -86,6 +86,12 @@
   border: 1px solid #9b83d0;
 }
 
+.hero_section {
+  background-image: radial-gradient(circle, rgba(3, 0, 20, .4) 14%, #030015 63%), url(https://uploads-ssl.webflow.com/64b98ae8b7e1288cf71ec395/64bc3517c380dc07d9ab59bc_bg-2.svg);
+  background-position: 0 0, 50% 130%;
+  background-size: auto, cover;
+}
+
 /* --------------------------------- */
   
   #myTable {

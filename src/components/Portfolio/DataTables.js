@@ -49,7 +49,7 @@ function DataTables() {
                         <td>{sellData[i].syncedAt}{sellData[i].symbol}</td>
                         <td>${sellData[i].valueUSD.toFixed(3)}</td>
                         <td className=''>${sellData[i].currentPriceUSD.toFixed(6)}</td>
-                        <td className=''>Wallet 3</td>
+                        <td className=''>Wallet 3</td>  
                         <td className=''>{temp.toLocaleString('en-US', options)}</td>
                         <td className=''>{sellData[i].profitX != undefined ? sellData[i].profitX.toFixed(2) : "1.00"}X</td>
                         <td className=''><a className='underline hover:cursor-pointer'>Link</a></td>
@@ -64,7 +64,7 @@ function DataTables() {
         console.log('buydatalength', buyData.length);
         if(buyData.length >= 1){
             console.log('legnth>1=--------------');
-            for(let i = 0 ; i < 10; i ++){
+            for(let i = 0 ; i < 10; i ++){ 
                 var temp = new Date(buyData[i].sellTime != undefined ? buyData[i].sellTime : 1694661887000);
                 const options = {
                     year: 'numeric',

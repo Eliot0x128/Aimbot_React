@@ -3,19 +3,19 @@ import '../css/project.css'
 import '../css/animations.css';
 
 import Navbar from './Navbar';
-import ClaimRewards from './ClaimRewards/ClaimMain';
+import Dashboard from './Landing/Dashboard';
 import Footer from './Footer';
 
-function ClaimEth () {
+function Landing () {
     return (
       <div className="App">
         <div className='relative w-full h-full body'>
           <Navbar />
-          <ClaimRewards />
+          <Dashboard />
           <Footer />
         </div>
       </div>
     );
 }
 
-export default ClaimEth;
+export default Landing;
