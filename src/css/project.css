@@ -97,23 +97,36 @@
   #myTable {
     border-collapse: collapse; /* Collapse borders */
     width: 100%; /* Full-width */
-    font-size: 18px; /* Increase font-size */
+    font-size: 1rem;
+    line-height: 1.5;
     color: white;
   }
   
   #myTable th, #myTable td {
     text-align: left; /* Left-align text */
-    padding: 10px; /* Add padding */
+    /* padding: 1px; Add padding */
   }
 
   #myTable1 {
     border-collapse: collapse; /* Collapse borders */
     width: 100%; /* Full-width */
-    font-size: 18px; /* Increase font-size */
+    font-size: 1rem;
+    line-height: 1.5;
     color: white;
   }
   
   #myTable1 th, #myTable1 td {
     text-align: left; /* Left-align text */
-    padding: 10px; /* Add padding */
+  }
+
+  .equal-width-td {
+    width: 7.5% !important;
+  }
+
+  .equal-width-td-focus {
+    width: 12.5% !important;
+  }
+
+  .equal-width-td-strong-focus {
+    width: 15% !important;
   }

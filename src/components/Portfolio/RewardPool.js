@@ -1,56 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../css/project.css';
-import axios from 'axios';
-import DataTable from 'datatables.net-dt';
-import 'datatables.net-responsive-dt';
 
 function RewardPool () {
-    const [tableContent, setTableContent] = useState([]);
-    const [tableData, setTableData] = useState([]);
-    const [sellData, setSellData] = useState([]);
-/*
-    useEffect(() => {
-        var content = [];
-        // for(let i = 0 ; i < 50; i ++)
-        //     content = [...content, (
-        //     <tr>
-        //         <td>Row {i} Data 1</td>
-        //         <td>Row {i} Data 2</td>
-        //     </tr>)];
-        // setTableContent(content);
-        console.log('request----------------');
-        const getData = async () => {
-            console.log('request-inside----------------');
-            const response = await axios.get('https://aimbotapi.onrender.com/api/accounts/audit/portfolio');
-            console.log('----------------------------------', response.data.balances);
-            
-            var tableData1 = [];
-            for(let i = 0; i < 50; i ++)
-                tableData1[i] = [`${response.data.balances[i].syncedAt}${response.data.balances[i].symbol}`, `$${response.data.balances[i].valueUSD.toFixed(3)}`];
-            
-            let table = new DataTable('#myTable', {
-                // config options...
-                retrieve: true,
-                paging: true,
-                searching: false,
-                data: tableData1,
-                responsive: true,
-            });
-
-            setTableData(tableData1);
-
-            console.log('finished-------------------');
-            if(response.data.balances != undefined){
-                setSellData(response.data.balances);
-            }
-        };
-
-        console.log('getdata---------------------------');
-        getData();
-
-        console.log('-------------------', sellData);
-    }, []);
-    */
 
     return (
         <div className='bg-[#030015] text-white my-24'>
@@ -136,19 +87,6 @@ function RewardPool () {
                     </div>
                 </div>
             </div>
-            {/* <div className='flex items-center justify-center'>
-            <table id="myTable" class="display">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableContent}
-                </tbody>
-            </table>
-            </div> */}
         </div>
     );
 }
