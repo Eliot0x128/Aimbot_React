@@ -17,3 +17,15 @@ function Portfolio () {
 }
 
 export default Portfolio;
+
+/*
+Updated List based on your feedback
+-Question Section width fixed
+-Generated From AI percent fixed
+-Token string format of tables fixed
+-Table spacing fixed
+-AI sells profit fixed
+-Table WalletID fixed
+-Duration of AI table fixed
+-Firefox & Brave browser tested
+*/

@@ -17,7 +17,7 @@ function RewardPool () {
             setBuyTaxData([rewardPoolData.day.tax.toFixed(2), rewardPoolData.week.tax.toFixed(2), rewardPoolData.month.tax.toFixed(2), rewardPoolData.total.tax.toFixed(2)]);
             setSellTaxData([rewardPoolData.day.bot.toFixed(2), rewardPoolData.week.bot.toFixed(2), rewardPoolData.month.bot.toFixed(2), rewardPoolData.total.bot.toFixed(2)]);
             setBuyPercentData([(rewardPoolData.day.tax / (rewardPoolData.day.tax + rewardPoolData.day.bot) * 100).toFixed(2), (rewardPoolData.week.tax / (rewardPoolData.week.tax + rewardPoolData.week.bot) * 100).toFixed(2), (rewardPoolData.month.tax / (rewardPoolData.month.tax + rewardPoolData.month.bot) * 100).toFixed(2), (rewardPoolData.total.tax / (rewardPoolData.total.tax + rewardPoolData.total.bot) * 100).toFixed(2)]);
-            setSellPercentData([(rewardPoolData.day.bot / (rewardPoolData.day.bot + rewardPoolData.day.bot) * 100).toFixed(2), (rewardPoolData.week.bot / (rewardPoolData.week.bot + rewardPoolData.week.bot) * 100).toFixed(2), (rewardPoolData.month.bot / (rewardPoolData.month.bot + rewardPoolData.month.bot) * 100).toFixed(2), (rewardPoolData.total.bot / (rewardPoolData.total.bot + rewardPoolData.total.bot) * 100).toFixed(2)]);
+            setSellPercentData([(rewardPoolData.day.bot / (rewardPoolData.day.tax + rewardPoolData.day.bot) * 100).toFixed(2), (rewardPoolData.week.bot / (rewardPoolData.week.tax + rewardPoolData.week.bot) * 100).toFixed(2), (rewardPoolData.month.bot / (rewardPoolData.month.tax + rewardPoolData.month.bot) * 100).toFixed(2), (rewardPoolData.total.bot / (rewardPoolData.total.tax + rewardPoolData.total.bot) * 100).toFixed(2)]);
             setTotalData([(rewardPoolData.day.tax + rewardPoolData.day.bot).toFixed(2), (rewardPoolData.week.tax + rewardPoolData.week.bot).toFixed(2), (rewardPoolData.month.tax + rewardPoolData.month.bot).toFixed(2), (rewardPoolData.total.tax + rewardPoolData.total.bot).toFixed(2)]);
         }
 
@@ -42,7 +42,7 @@ function RewardPool () {
                     <div className='flex flex-col p-4 mt-6 text-left rounded-md metrics_item'>
                         <p className='text-sm font-bold'>GENERATED FROM AI BOT</p>
                         <p className='mt-6 text-xl font-medium'>{sellTaxData[1]} ETH</p>
-                        <p className='mt-1 text-xl font-medium'>{sellPercentData[0]}%</p>
+                        <p className='mt-1 text-xl font-medium'>{sellPercentData[1]}%</p>
                     </div>
                 </div>
                 <div className='flex flex-col  w-[300px]'>
@@ -50,7 +50,7 @@ function RewardPool () {
                     <div className='flex flex-col p-4 mt-6 text-left rounded-md metrics_item'>
                         <p className='text-sm font-bold'>GENERATED FROM AI BOT</p>
                         <p className='mt-6 text-xl font-medium'>{sellTaxData[2]} ETH</p>
-                        <p className='mt-1 text-xl font-medium'>{sellPercentData[0]}%</p>
+                        <p className='mt-1 text-xl font-medium'>{sellPercentData[2]}%</p>
                     </div>
                 </div>
                 <div className='flex flex-col  w-[300px]'>
@@ -58,7 +58,7 @@ function RewardPool () {
                     <div className='flex flex-col p-4 mt-6 text-left rounded-md metrics_item'>
                         <p className='text-sm font-bold'>GENERATED FROM AI BOT</p>
                         <p className='mt-6 text-xl font-medium'>{sellTaxData[3]} ETH</p>
-                        <p className='mt-1 text-xl font-medium'>{sellPercentData[0]}%</p>
+                        <p className='mt-1 text-xl font-medium'>{sellPercentData[3]}%</p>
                     </div>
                 </div>
             </div>

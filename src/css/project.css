@@ -123,10 +123,18 @@
     width: 7.5% !important;
   }
 
+  .equal-width-td-light-focus{
+    width: 10% !important;
+  }
+
   .equal-width-td-focus {
     width: 12.5% !important;
   }
 
   .equal-width-td-strong-focus {
     width: 15% !important;
+  }
+
+  .equal-width-td-AI {
+    width: 20% !important;
   }
