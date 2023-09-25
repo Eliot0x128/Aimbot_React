@@ -7,8 +7,8 @@ import ContractABI from './ABI.json';
 const ContractAddress = "0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7";
 
 function ClaimRewards () {
-    const [ethShare, setEthShare] = useState("");
-    const [ethSharePercent, setEthSharePercent] = useState("");
+    const [ethShare, setEthShare] = useState("0");
+    const [ethSharePercent, setEthSharePercent] = useState("0.000000");
     const [totalEth, setTotalEth] = useState("");
 
     const ethereum = window.ethereum;
