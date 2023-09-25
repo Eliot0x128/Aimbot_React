@@ -27,27 +27,27 @@ function ClaimRewards () {
 
     useEffect(() => {
       const getClaimData = async () => {
+        const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
+        const totalEth =await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
+        const totalEthString = totalEth.toString();
+        setTotalEth(totalEthString[0] + totalEthString[1] + '.' + totalEthString[2] + totalEthString[3]);
+
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
         const walletAddress = accounts[0];    // first account in MetaMask
         const signer = provider.getSigner(walletAddress);
         var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
-  
+   
         const ethShareText = await myContract.stats(walletAddress);
         const total = ethShareText.totalDividends.toString();
         const withdrawable = ethShareText.withdrawableDividends.toString();
         setEthShare(total);
         setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
-        
-        const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
-        const totalEth =await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
-        const totalEthString = totalEth.toString();
-        setTotalEth(totalEthString[0] + totalEthString[1] + '.' + totalEthString[2] + totalEthString[3]);
       };
 
       getClaimData();
-    });
+    }, []);
 
     return (
         <div className='claim_section w-full h-full body bg-[#030015] flex flex-col justify-center items-center pb-36'>
