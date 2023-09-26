@@ -80,10 +80,10 @@ function DataTables() {
                 var linkContent = [(<a href={linkUrl} className='underline'>Link</a>)];
 
                 var amountToken = sellData[i].balanceWholeTokens != null ? parseInt(sellData[i].balanceWholeTokens.toFixed(0), 10).toLocaleString() : "0";
-                var selValue = sellData[i].valueUSD.toFixed(3);
+                var selValue = sellData[i].valueUSD.toFixed(2);
                 var currentValue = sellData[i].currentPriceUSD.toFixed(6);
                 var currentProfit = sellData[i].profitX != undefined ? sellData[i].profitX.toFixed(2) : "1.00";
-                tableData[i] = [`${amountToken}${" "}${sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "Link"];
+                tableData[i] = [`${amountToken}${" "}${sellData[i].symbol.length >= 7 ? (sellData[i].symbol.slice(0, 7) + "...") : sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "Link"];
             }
 
             let table = new DataTable('#myTable', {
@@ -93,6 +93,7 @@ function DataTables() {
                 searching: true,
                 data: tableData,
                 responsive: true,
+                "@data-sort": "Price Per Token",
             });
 
             {/* AI Sells */} 
@@ -125,7 +126,7 @@ function DataTables() {
                 const seconds = duartion % 60;
                 var durationString = (days != 0 ? days + " Days " : "") + (hours != 0 ? hours + " Hours " : "") + (minutes != 0 ? minutes + " Minutes " : "") + (seconds != 0 ? seconds + " Seconds " : "");
             
-                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice}ETH`, `${sellPrice}ETH`, `${profitValue}ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, `Link`];
+                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue}ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, `Link`];
             }   
 
             let myTable1 = new DataTable('#myTable1', {

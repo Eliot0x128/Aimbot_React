@@ -8,8 +8,9 @@ const ContractAddress = "0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7";
 
 function ClaimRewards () {
     const [ethShare, setEthShare] = useState("0");
-    const [ethSharePercent, setEthSharePercent] = useState("0.000000");
+    const [ethSharePercent, setEthSharePercent] = useState("0");
     const [totalEth, setTotalEth] = useState("");
+    const [buttonName, setButtonName] = useState("Connect Wallet");
 
     const ethereum = window.ethereum;
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -25,25 +26,29 @@ function ClaimRewards () {
       await myContract.claim();
     };
 
+    const connectWallet = async () => {
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const walletAddress = accounts[0];    // first account in MetaMask
+      const signer = provider.getSigner(walletAddress);
+      var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
+      
+      setButtonName("Connected");
+ 
+      const ethShareText = await myContract.stats(walletAddress);
+      const total = ethShareText.totalDividends.toString();
+      const withdrawable = ethShareText.withdrawableDividends.toString();
+      setEthShare(total);
+      setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
+    };
+
     useEffect(() => {
       const getClaimData = async () => {
         const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
         const totalEth =await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
         const totalEthString = totalEth.toString();
         setTotalEth(totalEthString[0] + totalEthString[1] + '.' + totalEthString[2] + totalEthString[3]);
-
-        const accounts = await ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const walletAddress = accounts[0];    // first account in MetaMask
-        const signer = provider.getSigner(walletAddress);
-        var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
-   
-        const ethShareText = await myContract.stats(walletAddress);
-        const total = ethShareText.totalDividends.toString();
-        const withdrawable = ethShareText.withdrawableDividends.toString();
-        setEthShare(total);
-        setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
       };
 
       getClaimData();
@@ -54,10 +59,10 @@ function ClaimRewards () {
           <div className='bg-[#030015] border-t border-[#9B83D031] w-2/3 mb-36'></div>
           <p className='md:text-6xl text-5xl text-[#BAA9E5] font-bold mb-6'>Claim your ETH</p>
           <p className='mb-12 text-lg text-white md:text-xl'>Connect your wallet and then click on CLAIM.</p>
-          {/* <button className="ml-7 text-xl mb-8 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
-            Connect Wallet
-          </button> */}
-          <ConnectButton />
+          <button onClick={connectWallet} id="connectButton" className="ml-7 text-xl mb-8 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+            {buttonName}
+          </button>
+          {/* <ConnectButton /> */}
           <div className='flex flex-col items-center justify-center w-full my-10 md:flex-row gap-7'>
             <div className='border border-gray-500 bg-[#161226] rounded-xl h-[150px] w-2/3 md:w-[220px] p-2'>
               <div className='border border-gray-500 bg-[#0c051e] rounded-xl h-full'>
@@ -87,7 +92,7 @@ function ClaimRewards () {
           <button onClick={claimMyEth} className="md:text-xl text-lg ml-7 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
             Claim Your ETH
           </button>
-          <p className='text-xl text-white'>If your claim is 0, you simply need to wait for the next distribution before being eligible.</p>
+          <p className='text-xl text-white'>If your claim is 0 ETH, you simply need to wait for the next distribution before being eligible.</p>
         </div>
     );
 }
