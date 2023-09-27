@@ -4,12 +4,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import DataTable from 'datatables.net-dt';
 import 'datatables.net-responsive-dt';
+// import { ReactDOM } from 'react';
 
 import { FaRecycle } from 'react-icons/fa';
 
 function DataTables() {
-    const [tableContent, setTableContent] = useState([]);
-    const [tableContent1, setTableContent1] = useState([]);
     const [flag, setFlag] = useState(0); 
 
     const returnWalletID = (wallet) => {
@@ -62,7 +61,7 @@ function DataTables() {
             {/* Current Holdings Table */}
             const response = await axios.get('https://aimbotapi.onrender.com/api/accounts/audit/portfolio');
             const sellData = response.data.balances;
-
+            
             var tableData = [];
             for(let i = 0 ; i < sellData.length; i ++){
                 var temp = new Date(sellData[i].firstBuyTime != undefined ? sellData[i].firstBuyTime : 1694661887000);
@@ -76,14 +75,11 @@ function DataTables() {
                     hour12: true
                   };
                 
-                var linkUrl = "https://etherscan.io/token/" + sellData[i].token;
-                var linkContent = [(<a href={linkUrl} className='underline'>Link</a>)];
-
                 var amountToken = sellData[i].balanceWholeTokens != null ? parseInt(sellData[i].balanceWholeTokens.toFixed(0), 10).toLocaleString() : "0";
                 var selValue = sellData[i].valueUSD.toFixed(2);
                 var currentValue = sellData[i].currentPriceUSD.toFixed(6);
                 var currentProfit = sellData[i].profitX != undefined ? sellData[i].profitX.toFixed(2) : "1.00";
-                tableData[i] = [`${amountToken}${" "}${sellData[i].symbol.length >= 7 ? (sellData[i].symbol.slice(0, 7) + "...") : sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "Link"];
+                tableData[i] = [`${amountToken}${" "}${sellData[i].symbol.length >= 7 ? (sellData[i].symbol.slice(0, 7) + "...") : sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "https://etherscan.io/token/" + sellData[i].token];
             }
 
             let table = new DataTable('#myTable', {
@@ -93,7 +89,14 @@ function DataTables() {
                 searching: true,
                 data: tableData,
                 responsive: true,
-                "@data-sort": "Price Per Token",
+                order: [[2, 'desc']],
+                columnDefs: [{
+                  "targets" : 6,
+                  "render": function ( data, type, row, meta ) {
+                    const etherscanLink = row[6];
+                    return `<a href= ${etherscanLink}>Link</a>`;
+                  }
+                }]
             });
 
             {/* AI Sells */} 
@@ -126,7 +129,7 @@ function DataTables() {
                 const seconds = duartion % 60;
                 var durationString = (days != 0 ? days + " Days " : "") + (hours != 0 ? hours + " Hours " : "") + (minutes != 0 ? minutes + " Minutes " : "") + (seconds != 0 ? seconds + " Seconds " : "");
             
-                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue}ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, `Link`];
+                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue}ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, "https://etherscan.io/tx/" + buyData[i].sellHash];
             }   
 
             let myTable1 = new DataTable('#myTable1', {
@@ -136,15 +139,22 @@ function DataTables() {
                 searching: true,
                 data: tableData1,
                 responsive: true,
+                order: [[2, 'desc']],
+                columnDefs: [{
+                  "targets" : 7,
+                  "render": function ( data, type, row, meta ) {
+                    const etherscanLink = row[7];
+                    return `<a href= ${etherscanLink}>Link</a>`;
+                  }
+                }]
             });
         };
 
         getData();
     }, [flag]);
 
-
   return (
-    <div className="bg-[#030015] h-full claim_section_portfolio text-white">
+    <div className="bg-[#030015] h-full claim_section_portfolio text-white overflow-hidden">
       <p className='text-[#C0B0E9] font-bold text-5xl mb-12'>AI Portfolio Tracker</p>
       <button className="mb-10 ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-10 rounded-md">
         <div className='flex flex-row items-center gap-3 text-lg' onClick={() => setFlag(flag + 1)}><FaRecycle />Refresh Portfolio</div>
@@ -153,8 +163,8 @@ function DataTables() {
       <p className='mb-6 text-3xl font-bold text-white'>Current Holdings</p>
       <p className='mb-20 text-xl text-white'>Check our AI holdings in real-time. The list is updated after new buys or sells.</p>
       <div className='flex items-center justify-center'>
-        <div className='w-2/3'>
-            <table id="myTable" class="display">
+        <div className='w-full px-10 lg:w-2/3 lg:px-0'>
+            <table id="myTable" className="display">
                 <thead>
                     <tr>
                         <th className='equal-width-td-focus'>Token</th>
@@ -167,7 +177,6 @@ function DataTables() {
                     </tr>
                 </thead>
                 <tbody>
-                    
                 </tbody>
             </table>
         </div>
@@ -178,7 +187,7 @@ function DataTables() {
       <p className='mb-20 text-xl text-white'>Check all the sells from our AI. The list is updated every few minutes.</p>
     
       <div className='flex items-center justify-center'>
-        <div className='w-3/4'>
+        <div className='w-full px-10 lg:w-3/4 lg:px-0'>
             <table id="myTable1">
                 <thead>
                     <tr className="header">
