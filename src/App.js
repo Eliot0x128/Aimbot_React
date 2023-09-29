@@ -17,10 +17,11 @@ function App() {
 }
 
 export default App;
-
 /*
-Updated List
--Responsive of tables(mobile horizontal scroll) fixed
--Sorted table by usd value(Price per usd | Sell Size)
--Link on tables Fixed
+Updated list
+-Sorted by Token value
+-Duration display format fixed(ex. "1 Hours" to "1 Hour")
+-Limited Name/Symbol to 20 chars + ...
+-Token price subscription fixed(ex. 0.0₉56373 instead of 0.000000)
+-I think sorting by duration is correct, please check sorting of https://www.aim-bot.app/portfolio
 */

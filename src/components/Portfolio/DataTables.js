@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../../css/project.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import DataTable from 'datatables.net-dt';
 import 'datatables.net-responsive-dt';
-// import { ReactDOM } from 'react';
-
 import { FaRecycle } from 'react-icons/fa';
 
 function DataTables() {
@@ -54,7 +51,67 @@ function DataTables() {
         const seconds = Math.floor(timeDifference / millisecondsPerSecond);
       
         return seconds;
+    }
+
+    const formatDuration = (seconds) => {
+      const secondsPerMinute = 60;
+      const secondsPerHour = 60 * secondsPerMinute;
+      const secondsPerDay = 24 * secondsPerHour;
+    
+      const days = Math.floor(seconds / secondsPerDay);
+      const hours = Math.floor((seconds % secondsPerDay) / secondsPerHour);
+      const minutes = Math.floor((seconds % secondsPerHour) / secondsPerMinute);
+      const remainingSeconds = seconds % secondsPerMinute;
+    
+      let durationString = '';
+    
+      if (days > 0) {
+        durationString += `${days} day${days > 1 ? 's' : ''}`;
       }
+    
+      if (hours > 0) {
+        durationString += ` ${hours} hour${hours > 1 ? 's' : ''}`;
+      }
+    
+      if (minutes > 0) {
+        durationString += ` ${minutes} minute${minutes > 1 ? 's' : ''}`;
+      }
+    
+      if (remainingSeconds > 0) {
+        durationString += ` ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+      }
+    
+      return durationString.trim();
+    }
+
+    const formatFloat = (number) => {
+      if(number >= 1) {
+          return number.toFixed(2)
+      }
+      else if(number >= 0.00001) {
+          // Use toPrecision to get 4 significant figures.
+          return parseFloat(number.toPrecision(4)).toString()
+      } else {
+          let str = number.toFixed(20); // Convert number to a string with many decimal places.
+          let zeros = str.split(".")[1].match(/^0+/)[0].length  // Count leading zeros.
+          
+          if(zeros >= 5) {
+              let significantDigits = str.split(".")[1].substring(zeros, zeros + 4)
+              // Remove trailing zeros after the fourth significant figure
+              significantDigits = parseFloat('0.' + significantDigits).toString().substring(2)
+              
+              // Convert number of zeros into subscript
+              let zerosSubscript = Array.from(String(zeros)).map(digit => 
+                  String.fromCodePoint("₀".codePointAt(0) + parseInt(digit))
+              ).join('')
+              
+              return "0.0" + zerosSubscript + significantDigits;
+          } else {
+              // Just return the number rounded to 4 sig figs.
+              return parseFloat(number.toPrecision(4)).toString()
+          }
+      }
+    }
 
     useEffect(() => {
         const getData = async () => {
@@ -77,9 +134,9 @@ function DataTables() {
                 
                 var amountToken = sellData[i].balanceWholeTokens != null ? parseInt(sellData[i].balanceWholeTokens.toFixed(0), 10).toLocaleString() : "0";
                 var selValue = sellData[i].valueUSD.toFixed(2);
-                var currentValue = sellData[i].currentPriceUSD.toFixed(6);
+                var currentValue = formatFloat(sellData[i].currentPriceUSD);
                 var currentProfit = sellData[i].profitX != undefined ? sellData[i].profitX.toFixed(2) : "1.00";
-                tableData[i] = [`${amountToken}${" "}${sellData[i].symbol.length >= 7 ? (sellData[i].symbol.slice(0, 7) + "...") : sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "https://etherscan.io/token/" + sellData[i].token];
+                tableData[i] = [`${amountToken}${" "}${sellData[i].symbol.length >= 20 ? (sellData[i].symbol.slice(0, 20) + "...") : sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "https://etherscan.io/token/" + sellData[i].token];
             }
 
             let table = new DataTable('#myTable', {
@@ -89,7 +146,7 @@ function DataTables() {
                 searching: true,
                 data: tableData,
                 responsive: true,
-                order: [[2, 'desc']],
+                order: [[1, 'desc']],
                 columnDefs: [{
                   "targets" : 6,
                   "render": function ( data, type, row, meta ) {
@@ -121,15 +178,10 @@ function DataTables() {
                 var sellPrice = buyData[i].sellForETH != undefined ? buyData[i].sellForETH.toFixed(2) : 0.07;
                 var profitValue = (sellPrice - buyPrice).toFixed(2);
                 var profitPercent  = (sellPrice / buyPrice).toFixed(2);
-                
-                var duartion = calculateDurationInSeconds(buyData[i].buyTime,buyData[i].sellTime);
-                const days = Math.floor(duartion / (3600 * 24));
-                const hours = Math.floor((duartion % (3600 * 24)) / 3600);
-                const minutes = Math.floor((duartion % 3600) / 60);
-                const seconds = duartion % 60;
-                var durationString = (days != 0 ? days + " Days " : "") + (hours != 0 ? hours + " Hours " : "") + (minutes != 0 ? minutes + " Minutes " : "") + (seconds != 0 ? seconds + " Seconds " : "");
+                var duration = calculateDurationInSeconds(buyData[i].buyTime,buyData[i].sellTime);
+                var durationString = formatDuration(duration);
             
-                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue}ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, "https://etherscan.io/tx/" + buyData[i].sellHash];
+                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue} ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, "https://etherscan.io/tx/" + buyData[i].sellHash];
             }   
 
             let myTable1 = new DataTable('#myTable1', {
