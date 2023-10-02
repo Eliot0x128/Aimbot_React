@@ -8,6 +8,53 @@ import { FaRecycle } from 'react-icons/fa';
 function DataTables() {
     const [flag, setFlag] = useState(0); 
 
+    const stringToSeconds = (timeString) => {
+      const pattern = /(?:(\d+)\s*days?)?\s*(?:(\d+)\s*hours?)?\s*(?:(\d+)\s*minutes?)?\s*(?:(\d+)\s*seconds?)?/i;
+
+      // Extract the time components using the regular expression
+      const matches = timeString.match(pattern);
+
+      // Extract the days, hours, minutes, and seconds from the matches
+      const days = parseInt(matches[1]) || 0;
+      const hours = parseInt(matches[2]) || 0;
+      const minutes = parseInt(matches[3]) || 0;
+      const seconds = parseInt(matches[4]) || 0;
+
+      // Calculate the total seconds
+      const totalSeconds = days * 24 * 3600 + hours * 3600 + minutes * 60 + seconds;
+      
+      return totalSeconds;
+    }
+
+    const stringToNumber = (subscrStr) => {
+      let tempStr = [];
+      var j = 0;
+      for(var i = 0; i < subscrStr.length; i ++) {
+        if((subscrStr[i] >= '0' && subscrStr[i] <= '9') || subscrStr[i] == '.'){
+          tempStr[j] = subscrStr[i];
+          j ++;
+        }
+        else if(subscrStr[i] == '$')
+          continue;
+        else {
+          let cnt = 0;
+          if(subscrStr == undefined || subscrStr[i] == undefined || subscrStr[i] == null)
+            break;
+          console.log(subscrStr);
+          if(subscrStr[i - 1].codePointAt(0) >= '₀'.codePointAt(0) && subscrStr[i - 1].codePointAt(0) <= '₀'.codePointAt(0) + 9) {
+            cnt = (subscrStr[i - 1].codePointAt(0) - '₀'.codePointAt(0)) * 9;
+          }
+          cnt += subscrStr[i].codePointAt(0) - '₀'.codePointAt(0);
+
+          while(cnt >= 1) {
+            tempStr[j ++] = '0';
+            cnt --;
+          }
+        }
+      }
+      return tempStr.join('');
+    }
+
     const returnWalletID = (wallet) => {
         if (wallet == "0x116d1edd539e5e93551973eb2a71898c9095122f") {
           return "Legacy Contract"
@@ -139,6 +186,17 @@ function DataTables() {
                 tableData[i] = [`${amountToken}${" "}${sellData[i].symbol.length >= 20 ? (sellData[i].symbol.slice(0, 20) + "...") : sellData[i].symbol}`, `$${selValue}`, `$${currentValue}`, `${returnWalletID(sellData[i].account)}`, `${temp.toLocaleString('en-US', options)}`, `${currentProfit}X`, "https://etherscan.io/token/" + sellData[i].token];
             }
 
+            const priceDescSort = (x, y) => {
+              return parseFloat(stringToNumber(x)) > parseFloat(stringToNumber(y)) ? 1 : -1;
+            };
+        
+            const priceAscSort = (x, y) => {
+              return parseFloat(stringToNumber(x)) > parseFloat(stringToNumber(y)) ? -1 : 1;
+            };
+        
+            DataTable.ext.type.order['price-desc'] = priceDescSort;
+            DataTable.ext.type.order['price-asc'] = priceAscSort;  
+
             let table = new DataTable('#myTable', {
                 // config options...
                 retrieve: true,
@@ -152,8 +210,12 @@ function DataTables() {
                   "render": function ( data, type, row, meta ) {
                     const etherscanLink = row[6];
                     return `<a href= ${etherscanLink}>Link</a>`;
+                  }},
+                  {
+                    "targets": 2,
+                    "type": "price"
                   }
-                }]
+                ]
             });
 
             {/* AI Sells */} 
@@ -163,7 +225,7 @@ function DataTables() {
             var tableData1 = [];
             for(let i = 0 ; i < buyData.length; i ++){
                 var temp = new Date(buyData[i].sellTime != undefined ? buyData[i].sellTime : 1694661887000);
-                const options = {
+                const options = {                          
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -182,7 +244,18 @@ function DataTables() {
                 var durationString = formatDuration(duration);
             
                 tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue} ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, "https://etherscan.io/tx/" + buyData[i].sellHash];
-            }   
+            }
+
+            const testDescSort = (x, y) => {
+              return stringToSeconds(x) > stringToSeconds(y) ? 1 : -1;
+            };
+        
+            const testAscSort = (x, y) => {
+              return stringToSeconds(x) > stringToSeconds(y) ? -1 : 1;
+            };
+        
+            DataTable.ext.type.order['test-desc'] = testDescSort;
+            DataTable.ext.type.order['test-asc'] = testAscSort;  
 
             let myTable1 = new DataTable('#myTable1', {
                 // config options...
@@ -192,13 +265,18 @@ function DataTables() {
                 data: tableData1,
                 responsive: true,
                 order: [[2, 'desc']],
-                columnDefs: [{
+                columnDefs: [
+                  {
                   "targets" : 7,
                   "render": function ( data, type, row, meta ) {
                     const etherscanLink = row[7];
                     return `<a href= ${etherscanLink}>Link</a>`;
+                  }},
+                  {
+                    "targets": 5,
+                    "type": "test"
                   }
-                }]
+                ]
             });
         };
 
