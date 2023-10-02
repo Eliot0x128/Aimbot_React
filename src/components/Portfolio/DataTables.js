@@ -243,7 +243,7 @@ function DataTables() {
                 var duration = calculateDurationInSeconds(buyData[i].buyTime,buyData[i].sellTime);
                 var durationString = formatDuration(duration);
             
-                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol.length >= 20 ? (buyData[i].symbol.slice(0, 20) + "...") : sellData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue} ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, "https://etherscan.io/tx/" + buyData[i].sellHash];
+                tableData1[i] = [`${tokenAmount}${' '}${buyData[i].symbol.length >= 20 ? (buyData[i].symbol.slice(0, 20) + "...") : buyData[i].symbol}`, `${buyPrice} ETH`, `${sellPrice} ETH`, `${profitValue} ETH${' '}(${profitPercent}X)`, `${temp.toLocaleString('en-US', options)}`, `${durationString}`, `${returnWalletID(buyData[i].seller)}`, "https://etherscan.io/tx/" + buyData[i].sellHash];
             }
 
             const testDescSort = (x, y) => {
