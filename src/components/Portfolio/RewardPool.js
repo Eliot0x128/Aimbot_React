@@ -26,8 +26,8 @@ function RewardPool () {
 
     return (
         <div className='bg-[#030015] text-white my-24'>
-            <p className='text-6xl text-[#AD99DC] font-semibold'>Reward Pool Live Feed</p>
-            <p className='mt-8 text-xl font-medium'>Displaying ETH flowing to the reward pool in real-time.</p>
+            <p className='md:text-6xl text-5xl text-[#AD99DC] font-semibold'>Reward Pool Live Feed</p>
+            <p className='px-6 mt-8 text-xl font-medium md:px-0'>Displaying ETH flowing to the reward pool in real-time.</p>
             <div className='flex flex-col items-center justify-center mt-20 md:flex-row gap-7'>
                 <div className='flex flex-col w-[300px]'>
                     <div className='text-3xl font-bold text-center'>Daily</div>

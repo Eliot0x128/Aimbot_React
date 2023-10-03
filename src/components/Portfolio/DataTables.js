@@ -203,7 +203,7 @@ function DataTables() {
                 paging: true,
                 searching: true,
                 data: tableData,
-                responsive: true,
+                // responsive: true,
                 order: [[1, 'desc']],
                 columnDefs: [{
                   "targets" : 6,
@@ -263,7 +263,7 @@ function DataTables() {
                 paging: true,
                 searching: true,
                 data: tableData1,
-                responsive: true,
+                // responsive: true,
                 order: [[2, 'desc']],
                 columnDefs: [
                   {
@@ -284,14 +284,15 @@ function DataTables() {
     }, [flag]);
 
   return (
-    <div className="bg-[#030015] h-full claim_section_portfolio text-white overflow-hidden">
+    <div className="bg-[#030015] h-full claim_section_portfolio text-white overflow-auto">
       <p className='text-[#C0B0E9] font-bold text-5xl mb-12'>AI Portfolio Tracker</p>
       <button className="mb-10 ml-7 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-medium py-2 px-10 rounded-md">
         <div className='flex flex-row items-center gap-3 text-lg' onClick={() => setFlag(flag + 1)}><FaRecycle />Refresh Portfolio</div>
       </button>
       {/* Current Holdings Table */}
       <p className='mb-6 text-3xl font-bold text-white'>Current Holdings</p>
-      <p className='mb-20 text-xl text-white'>Check our AI holdings in real-time. The list is updated after new buys or sells.</p>
+      <p className='px-4 mb-20 text-xl text-white md:px-0'>Check our AI holdings in real-time. The list is updated after new buys or sells.</p>
+
       <div className='flex items-center justify-center'>
         <div className='w-full px-10 lg:w-2/3 lg:px-0'>
             <table id="myTable" className="display">
@@ -314,7 +315,7 @@ function DataTables() {
 
        {/* AI Sells */}
       <p className='mt-20 mb-6 text-3xl font-bold text-white'>AI Sells</p>
-      <p className='mb-20 text-xl text-white'>Check all the sells from our AI. The list is updated every few minutes.</p>
+      <p className='px-4 mb-20 text-xl text-white md:px-0'>Check all the sells from our AI. The list is updated every few minutes.</p>
     
       <div className='flex items-center justify-center'>
         <div className='w-full px-10 lg:w-3/4 lg:px-0'>

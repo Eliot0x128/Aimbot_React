@@ -92,7 +92,7 @@ function ClaimRewards () {
           <button onClick={claimMyEth} className="md:text-xl text-lg ml-7 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
             Claim Your ETH
           </button>
-          <p className='text-xl text-white'>If your claim is 0 ETH, you simply need to wait for the next distribution before being eligible.</p>
+          <p className='px-4 text-xl text-white md:px-0'>If your claim is 0 ETH, you simply need to wait for the next distribution before being eligible.</p>
         </div>
     );
 }
