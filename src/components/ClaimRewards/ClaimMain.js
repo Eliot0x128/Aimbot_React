@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import '../../css/project.css';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import Web3 from "web3";
 import ContractABI from './ABI.json';
