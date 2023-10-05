@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 
 const navigation = [
   { name: 'Why AIBOT', href: '/Landing', current: false },
-  { name: 'Roadmap', href: '#', current: false },
-  { name: 'Features', href: '#', current: false },
-  { name: 'Tokenomics', href: '#', current: false },
+  { name: 'Roadmap', href: 'https://www.aim-bot.app/#roadmap-features', current: false },
+  { name: 'Features', href: 'https://www.aim-bot.app/#roadmap-features', current: false },
+  { name: 'Tokenomics', href: 'https://www.aim-bot.app/#tokenomics', current: false },
   { name: 'AI Portfolio', href: '/', current: false },
 ]
 
