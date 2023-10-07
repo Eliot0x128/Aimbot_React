@@ -1,10 +1,9 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Disclosure } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Why AIBOT', href: '/Landing', current: false },
+  { name: 'Why AIBOT', href: 'https://www.aim-bot.app/#whyAIM', current: false },
   { name: 'Roadmap', href: 'https://www.aim-bot.app/#roadmap-features', current: false },
   { name: 'Features', href: 'https://www.aim-bot.app/#roadmap-features', current: false },
   { name: 'Tokenomics', href: 'https://www.aim-bot.app/#tokenomics', current: false },

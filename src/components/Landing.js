@@ -19,5 +19,3 @@ function Landing () {
 }
 
 export default Landing;
-
-//https://aimbot-berry.vercel.app/
