@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import '../../css/project.css';
-import { ethers } from 'ethers';
 import Web3 from "web3";
+import { ethers } from 'ethers';
+import '../../css/project.css';
+
 import ContractABI from './ABI.json';
 const ContractAddress = "0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7";
 
 function ClaimRewards () {
     const [ethShare, setEthShare] = useState("0");
     const [ethSharePercent, setEthSharePercent] = useState("0");
-    const [totalEth, setTotalEth] = useState("");
+    const [totalEth, setTotalEth] = useState(0);
     const [buttonName, setButtonName] = useState("Connect Wallet");
 
     const ethereum = window.ethereum;
@@ -25,29 +26,39 @@ function ClaimRewards () {
       await myContract.claim();
     };
 
-    const connectWallet = async () => {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const walletAddress = accounts[0];    // first account in MetaMask
-      const signer = provider.getSigner(walletAddress);
-      var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
-      
-      setButtonName("Connected");
- 
-      const ethShareText = await myContract.stats(walletAddress);
-      const total = ethShareText.totalDividends.toString();
-      const withdrawable = ethShareText.withdrawableDividends.toString();
-      setEthShare(total);
-      setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
+    const connectWallet = async () => {      
+      if(buttonName == "Connect Wallet"){
+        setButtonName("Connected");
+
+        const accounts = await ethereum.request({
+          method: "eth_requestAccounts",
+        });
+
+        const walletAddress = accounts[0];
+        const signer = provider.getSigner(walletAddress);
+        var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
+  
+        const ethShareText = await myContract.stats(walletAddress);
+        const total = ethShareText.totalDividends.toString();
+        const withdrawable = ethShareText.withdrawableDividends.toString();
+        setEthShare(total);
+        setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
+      }
+      else {
+        console.log('------------------------------');
+        console.log(provider.close); 
+
+        // deactivate();
+      }
     };
 
     useEffect(() => {
       const getClaimData = async () => {
         const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
         const totalEth =await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
-        const totalEthString = totalEth.toString();
-        setTotalEth(totalEthString[0] + totalEthString[1] + '.' + totalEthString[2] + totalEthString[3]);
+
+        const totalEthString = web3.utils.fromWei(totalEth, 'ether');
+        setTotalEth(parseFloat(totalEthString).toFixed(2));
       };
 
       getClaimData();
