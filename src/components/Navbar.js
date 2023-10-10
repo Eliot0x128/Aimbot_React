@@ -47,6 +47,7 @@ export default function Example() {
                       <a
                         key={item.name}
                         href={item.href}
+                        target="_blank"
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-white hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-md'
