@@ -7,7 +7,7 @@ const navigation = [
   { name: 'Roadmap', href: 'https://www.aim-bot.app/#roadmap-features', current: false },
   { name: 'Features', href: 'https://www.aim-bot.app/#roadmap-features', current: false },
   { name: 'Tokenomics', href: 'https://www.aim-bot.app/#tokenomics', current: false },
-  { name: 'AI Portfolio', href: '/', current: false },
+  { name: 'AI Portfolio', href: '/', current: true },
 ]
 
 function classNames(...classes) {

@@ -20,7 +20,9 @@ export default App;
 
 /*
 Updated list
--White screen of ClaimEth page
--Corrected total divs amount from '10.01ETH' to '100.10ETH'
--Reward pool boxes responsive fixed same as aim-bot.app/portfolio boxes
+-Navbar links on mobile not working fixed
+-Join community clickable on whole button, not only icon
+-Etherscan link target="_blank" added
+-Claim button hide when wallet not connected
+-Share of ETH calculation fixed(not tested cause my share is always 0)
 */

@@ -209,7 +209,7 @@ function DataTables() {
                   "targets" : 6,
                   "render": function ( data, type, row, meta ) {
                     const etherscanLink = row[6];
-                    return `<a href= ${etherscanLink}>Link</a>`;
+                    return `<a href= ${etherscanLink} target="_blank">Link</a>`;
                   }},
                   {
                     "targets": 2,
@@ -270,7 +270,7 @@ function DataTables() {
                   "targets" : 7,
                   "render": function ( data, type, row, meta ) {
                     const etherscanLink = row[7];
-                    return `<a href= ${etherscanLink}>Link</a>`;
+                    return `<a href= ${etherscanLink} target="_blank">Link</a>`;
                   }},
                   {
                     "targets": 5,

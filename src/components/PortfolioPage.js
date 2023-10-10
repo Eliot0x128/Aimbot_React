@@ -14,7 +14,7 @@ function PortfolioPage () {
           <Portfolio />
           <Footer />
           <div className='flex justify-center w-full'>
-              <div className='block gradient-1'></div>
+              <div className='hidden md:block gradient-1'></div>
           </div>
         </div>
       </div>

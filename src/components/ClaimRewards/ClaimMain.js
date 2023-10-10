@@ -26,6 +26,35 @@ function ClaimRewards () {
       await myContract.claim();
     };
 
+    const stringToNumber = (subscrStr) => {
+      let tempStr = [];
+      var j = 0;
+      for(var i = 0; i < subscrStr.length; i ++) {
+        if((subscrStr[i] >= '0' && subscrStr[i] <= '9') || subscrStr[i] == '.'){
+          tempStr[j] = subscrStr[i];
+          j ++;
+        }
+        else if(subscrStr[i] == '$')
+          continue;
+        else {
+          let cnt = 0;
+          if(subscrStr == undefined || subscrStr[i] == undefined || subscrStr[i] == null)
+            break;
+          console.log(subscrStr);
+          if(subscrStr[i - 1].codePointAt(0) >= '₀'.codePointAt(0) && subscrStr[i - 1].codePointAt(0) <= '₀'.codePointAt(0) + 9) {
+            cnt = (subscrStr[i - 1].codePointAt(0) - '₀'.codePointAt(0)) * 9;
+          }
+          cnt += subscrStr[i].codePointAt(0) - '₀'.codePointAt(0);
+
+          while(cnt >= 1) {
+            tempStr[j ++] = '0';
+            cnt --;
+          }
+        }
+      }
+      return tempStr.join('');
+    }
+
     const connectWallet = async () => {      
       if(buttonName == "Connect Wallet"){
         setButtonName("Connected");
@@ -41,14 +70,11 @@ function ClaimRewards () {
         const ethShareText = await myContract.stats(walletAddress);
         const total = ethShareText.totalDividends.toString();
         const withdrawable = ethShareText.withdrawableDividends.toString();
-        setEthShare(total);
+        setEthShare(stringToNumber(total));
         setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
       }
       else {
-        console.log('------------------------------');
-        console.log(provider.close); 
-
-        // deactivate();
+        
       }
     };
 
@@ -99,9 +125,11 @@ function ClaimRewards () {
               </div>
             </div>
           </div>
-          <button onClick={claimMyEth} className="md:text-xl text-lg ml-7 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
-            Claim Your ETH
-          </button>
+          { buttonName == "Connected" &&
+            <button onClick={claimMyEth} className="md:text-xl text-lg ml-7 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+              Claim Your ETH
+            </button>
+          }
           <p className='px-4 text-xl text-white md:px-0'>If your claim is 0 ETH, you simply need to wait for the next distribution before being eligible.</p>
         </div>
     );
