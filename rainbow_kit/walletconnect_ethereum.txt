@@ -11,32 +11,16 @@ function ClaimRewards () {
     const [ethSharePercent, setEthSharePercent] = useState("0");
     const [totalEth, setTotalEth] = useState(0);
     const [buttonName, setButtonName] = useState("Connect Wallet");
-    const [provider, setProvider] = useState(null);
-    const [web3Modal, setWeb3Modal] = useState(null);
-    const [walletAddress, setWalletAddress] = useState(null);
-    
-    const Web3Modal = window.Web3Modal.default;
+
+    const ethereum = window.ethereum;
+    const provider = new ethers.providers.Web3Provider(ethereum);
     const WalletConnectProvider = window.WalletConnectProvider.default;
 
-    // const init = () => {
-    //   const providerOptions = {
-    //     walletconnect: {
-    //       package: WalletConnectProvider,
-    //       options: {
-    //         // InfuraID. required to make this work
-    //         infuraId: "8c4beffc4b7041c889224772fbd23e2b",
-    //       }
-    //     },
-    //   };
-
-    //   const _web3Modal = new Web3Modal({    
-    //     providerOptions, // required
-    //   });
-
-    //   setWeb3Modal(_web3Modal);
-    // }
-
     const claimMyEth = async () => {
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const walletAddress = accounts[0];    // first account in MetaMask
       const signer = provider.getSigner(walletAddress);
       var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
       
@@ -72,45 +56,30 @@ function ClaimRewards () {
       return tempStr.join('');
     }
 
-    const connectYourWallet = async () => { 
-      if(buttonName == "Connect Wallet"){     
-        let instance;
+    const connectWallet = async () => {      
+      if(buttonName == "Connect Wallet"){
+        setButtonName("Connected");
 
-        if(window.ethereum) {
-          instance = window.ethereum;
-      
-          await instance.request({ method: "eth_requestAccounts" });
+        if(ethereum){
+          const accounts = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          const walletAddress = accounts[0];
+          const signer = provider.getSigner(walletAddress);
+          var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
+    
+          const ethShareText = await myContract.stats(walletAddress);
+          const total = ethShareText.totalDividends.toString();
+          const withdrawable = ethShareText.withdrawableDividends.toString();
+          setEthShare(stringToNumber(total));
+          setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
         }
         else {
-          instance = new WalletConnectProvider({
-            infuraId: "8c4beffc4b7041c889224772fbd23e2b"
-          });
           
-          await instance.enable();
         }
-        setButtonName("Disconnect");
-
-        let _provider = new ethers.providers.Web3Provider(instance);
-        setProvider(_provider);
-        const accounts = await _provider.listAccounts();
-        const _walletAddress = accounts[0];
-        setWalletAddress(_walletAddress);
-
-        const signer = _provider.getSigner(_walletAddress);
-        var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
-  
-        const ethShareText = await myContract.stats(_walletAddress);
-        console.log('-----------------------');
-        console.log(ethShareText);
-        const total = ethShareText.totalDividends.toString();
-        const withdrawable = ethShareText.withdrawableDividends.toString();
-        setEthShare(stringToNumber(total));
-        setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
       }
       else {
-          setProvider(null);
-          setWalletAddress(null);
-          setButtonName("Connect Wallet");
+        
       }
     };
 
@@ -131,7 +100,7 @@ function ClaimRewards () {
           <div className='bg-[#030015] border-t border-[#9B83D031] w-2/3 mb-36'></div>
           <p className='md:text-6xl text-5xl text-[#BAA9E5] font-bold mb-6'>Claim your ETH</p>
           <p className='mb-12 text-lg text-white md:text-xl'>Connect your wallet and then click on CLAIM.</p>
-          <button onClick={connectYourWallet} id="connectButton" className="ml-7 text-xl mb-8 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+          <button onClick={connectWallet} id="connectButton" className="ml-7 text-xl mb-8 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
             {buttonName}
           </button>
           {/* <ConnectButton /> */}
@@ -161,7 +130,7 @@ function ClaimRewards () {
               </div>
             </div>
           </div>
-          { buttonName == "Disconnect" &&
+          { buttonName == "Connected" &&
             <button onClick={claimMyEth} className="md:text-xl text-lg ml-7 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
               Claim Your ETH
             </button>
