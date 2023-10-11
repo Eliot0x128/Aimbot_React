@@ -91,33 +91,19 @@ function ClaimRewards () {
         setButtonName("Disconnect");
 
         let _provider = new ethers.providers.Web3Provider(instance);
-        // _provider = await web3Modal.connect();
         setProvider(_provider);
-        console.log('----------------------------');
-        console.log(_provider);
-
         const accounts = await _provider.listAccounts();
         const _walletAddress = accounts[0];
-        console.log('-------------------------');
-        console.log(_walletAddress);
         setWalletAddress(_walletAddress);
       }
       else{
-        console.log('-----------------disconnect------------------');
-        console.log(provider);
-        console.log(provider.close);
-        // if(provider.close) {
-          // await provider.close();
           setProvider(null);
           setWalletAddress(null);
           setButtonName("Connect Wallet");
-        // }
       }
     };
 
     useEffect(() => {
-      // init();
-
       const getClaimData = async () => {
         const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
         const totalEth =await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
