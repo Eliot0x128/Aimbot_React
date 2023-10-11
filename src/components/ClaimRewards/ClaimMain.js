@@ -11,15 +11,32 @@ function ClaimRewards () {
     const [ethSharePercent, setEthSharePercent] = useState("0");
     const [totalEth, setTotalEth] = useState(0);
     const [buttonName, setButtonName] = useState("Connect Wallet");
+    const [provider, setProvider] = useState(null);
+    const [web3Modal, setWeb3Modal] = useState(null);
+    const [walletAddress, setWalletAddress] = useState(null);
+    
+    const Web3Modal = window.Web3Modal.default;
+    const WalletConnectProvider = window.WalletConnectProvider.default;
 
-    const ethereum = window.ethereum;
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    const init = () => {
+      const providerOptions = {
+        walletconnect: {
+          package: WalletConnectProvider,
+          options: {
+            // InfuraID. required to make this work
+            infuraId: "8c4beffc4b7041c889224772fbd23e2b",
+          }
+        },
+      };
+
+      const _web3Modal = new Web3Modal({    
+        providerOptions, // required
+      });
+
+      setWeb3Modal(_web3Modal);
+    }
 
     const claimMyEth = async () => {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const walletAddress = accounts[0];    // first account in MetaMask
       const signer = provider.getSigner(walletAddress);
       var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
       
@@ -55,30 +72,52 @@ function ClaimRewards () {
       return tempStr.join('');
     }
 
-    const connectWallet = async () => {      
-      if(buttonName == "Connect Wallet"){
-        setButtonName("Connected");
+    const connectWallet = async () => { 
+      if(buttonName == "Connect Wallet"){     
+        let instance;
 
-        const accounts = await ethereum.request({
-          method: "eth_requestAccounts",
-        });
+        if(window.ethereum) {
+          instance = window.ethereum;
+      
+          await instance.request({ method: "eth_requestAccounts" });
+        }
+        else {
+          instance = new WalletConnectProvider({
+            infuraId: "8c4beffc4b7041c889224772fbd23e2b"
+          });
+          
+          await instance.enable();
+        }
+        setButtonName("Disconnect");
 
-        const walletAddress = accounts[0];
-        const signer = provider.getSigner(walletAddress);
-        var myContract = new ethers.Contract(ContractAddress, ContractABI, signer);
-  
-        const ethShareText = await myContract.stats(walletAddress);
-        const total = ethShareText.totalDividends.toString();
-        const withdrawable = ethShareText.withdrawableDividends.toString();
-        setEthShare(stringToNumber(total));
-        setEthSharePercent(total ==  "0" ? (0).toFixed(5) : (parseInt(withdrawable) * 100.0 / parseInt(total)).toFixed(4));
+        let _provider = new ethers.providers.Web3Provider(instance);
+        // _provider = await web3Modal.connect();
+        setProvider(_provider);
+        console.log('----------------------------');
+        console.log(_provider);
+
+        const accounts = await _provider.listAccounts();
+        const _walletAddress = accounts[0];
+        console.log('-------------------------');
+        console.log(_walletAddress);
+        setWalletAddress(_walletAddress);
       }
-      else {
-        
+      else{
+        console.log('-----------------disconnect------------------');
+        console.log(provider);
+        console.log(provider.close);
+        // if(provider.close) {
+          // await provider.close();
+          setProvider(null);
+          setWalletAddress(null);
+          setButtonName("Connect Wallet");
+        // }
       }
     };
 
     useEffect(() => {
+      // init();
+
       const getClaimData = async () => {
         const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
         const totalEth =await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
@@ -125,7 +164,7 @@ function ClaimRewards () {
               </div>
             </div>
           </div>
-          { buttonName == "Connected" &&
+          { buttonName == "Disconnect" &&
             <button onClick={claimMyEth} className="md:text-xl text-lg ml-7 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
               Claim Your ETH
             </button>
