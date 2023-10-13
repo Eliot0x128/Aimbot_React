@@ -87,7 +87,7 @@ function ClaimRewards () {
       };
 
       getClaimData();
-    }, [account.address]);
+    }, [account]);
 
     return (
         <div className='claim_section w-full h-full body bg-[#030015] flex flex-col justify-center items-center pb-36'>
