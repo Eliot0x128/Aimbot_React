@@ -26,7 +26,7 @@ function ClaimRewards () {
       address: ContractAddress,
       abi: ContractABI,
     });
-    console.log('---account addrr----' ,  typeof account.address)
+
     const contractread = useContractRead({
       address: ContractAddress,
       abi: ContractABI,
@@ -34,35 +34,6 @@ function ClaimRewards () {
       args : [account.address]
     });
     
-    const stringToNumber = (subscrStr) => {
-      let tempStr = [];
-      var j = 0;
-      for(var i = 0; i < subscrStr.length; i ++) {
-        if((subscrStr[i] >= '0' && subscrStr[i] <= '9') || subscrStr[i] == '.'){
-          tempStr[j] = subscrStr[i];
-          j ++;
-        }
-        else if(subscrStr[i] == '$')
-          continue;
-        else {
-          let cnt = 0;
-          if(subscrStr == undefined || subscrStr[i] == undefined || subscrStr[i] == null)
-            break;
-          console.log(subscrStr);
-          if(subscrStr[i - 1].codePointAt(0) >= '₀'.codePointAt(0) && subscrStr[i - 1].codePointAt(0) <= '₀'.codePointAt(0) + 9) {
-            cnt = (subscrStr[i - 1].codePointAt(0) - '₀'.codePointAt(0)) * 9;
-          }
-          cnt += subscrStr[i].codePointAt(0) - '₀'.codePointAt(0);
-
-          while(cnt >= 1) {
-            tempStr[j ++] = '0';
-            cnt --;
-          }
-        }
-      }
-      return tempStr.join('');
-    }
-  
     if(account.address == undefined && legacyOpen == 1) {
       setLegacyOpen(0);
     }
@@ -87,7 +58,7 @@ function ClaimRewards () {
       };
 
       getClaimData();
-    }, []);
+    }, [account.address]);
 
     return (
         <div className='claim_section w-full h-full body bg-[#030015] flex flex-col justify-center items-center pb-36'>
