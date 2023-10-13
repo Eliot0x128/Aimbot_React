@@ -38,6 +38,35 @@ function ClaimRewards () {
       setLegacyOpen(0);
     }
 
+    const stringToNumber = (subscrStr) => {
+      let tempStr = [];
+      var j = 0;
+      for(var i = 0; i < subscrStr.length; i ++) {
+        if((subscrStr[i] >= '0' && subscrStr[i] <= '9') || subscrStr[i] == '.'){
+          tempStr[j] = subscrStr[i];
+          j ++;
+        }
+        else if(subscrStr[i] == '$')
+          continue;
+        else {
+          let cnt = 0;
+          if(subscrStr == undefined || subscrStr[i] == undefined || subscrStr[i] == null)
+            break;
+          console.log(subscrStr);
+          if(subscrStr[i - 1].codePointAt(0) >= '₀'.codePointAt(0) && subscrStr[i - 1].codePointAt(0) <= '₀'.codePointAt(0) + 9) {
+            cnt = (subscrStr[i - 1].codePointAt(0) - '₀'.codePointAt(0)) * 9;
+          }
+          cnt += subscrStr[i].codePointAt(0) - '₀'.codePointAt(0);
+
+          while(cnt >= 1) {
+            tempStr[j ++] = '0';
+            cnt --;
+          }
+        }
+      }
+      return tempStr.join('');
+    }
+
     useEffect(() => {
       if(account.address && contractread.isSuccess) {
         console.log(contractread.data);
