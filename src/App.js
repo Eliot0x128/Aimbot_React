@@ -17,12 +17,3 @@ const App = () => {
 }
 
 export default App;
-
-/*
-Updated list
--Navbar links on mobile not working fixed
--Join community clickable on whole button, not only icon
--Etherscan link target="_blank" added
--Claim button hide when wallet not connected
--Share of ETH calculation fixed(not tested cause my share is always 0)
-*/

@@ -11,26 +11,43 @@ import {
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import '../../css/project.css';
 
-import ContractABI from './ABI.json';
+import ContractABI from './Legacy_ABI.json';
+import ClaimContractABI from './Claim_ABI.json';
+
 const ContractAddress = "0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7";
+const ClaimContractAddress = "0xe1B9f11aA79cb64AcaC94Ea021Ca800AEF6964F1";
 
 function ClaimRewards () {
     const account = useAccount();
 
     const [ethShare, setEthShare] = useState("0");
     const [ethSharePercent, setEthSharePercent] = useState("0");
+    const [claimEthShare, setClaimEthShare] = useState("0");
+    const [claimEthSharePercent, setClaimEthSharePercent] = useState("0");
     const [totalEth, setTotalEth] = useState(0);
     const [legacyOpen, setLegacyOpen] = useState(0);
 
-    const { data, isLoading, isSuccess, write } = useContractWrite({
+    const { data: data1, isLoading: isLoading1, isSuccess: isSuccess1, write: write1 } = useContractWrite({
       address: ContractAddress,
       abi: ContractABI,
+    });
+
+    const { data: data2, isLoading: isLoading2, isSuccess: isSuccess2, write: write2 } = useContractWrite({
+      address: ClaimContractAddress,
+      abi: ClaimContractABI,
     });
 
     const contractread = useContractRead({
       address: ContractAddress,
       abi: ContractABI,
       functionName : 'stats',
+      args : [account.address]
+    });
+
+    const claimContractread = useContractRead({
+      address: ClaimContractAddress,
+      abi: ClaimContractABI,
+      functionName : 'accountData',
       args : [account.address]
     });
     
@@ -69,13 +86,18 @@ function ClaimRewards () {
 
     useEffect(() => {
       if(account.address && contractread.isSuccess) {
-        console.log(contractread.data);
         const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
         const withdrawableDividends = web3.utils.fromWei(contractread.data[0], 'ether');
         const totalDividends = web3.utils.fromWei(contractread.data[1], 'ether');
+
+        const withdrawableDividends1 = web3.utils.fromWei(claimContractread.data[0], 'ether');
+        const totalDividends1 = web3.utils.fromWei(claimContractread.data[1], 'ether');
   
         setEthShare(stringToNumber(parseFloat(totalDividends).toFixed(2)));
         setEthSharePercent(totalDividends ==  "0." ? (0).toFixed(5) : (parseInt(withdrawableDividends) * 100.0 / parseInt(totalDividends)).toFixed(4));
+
+        setClaimEthShare(stringToNumber(parseFloat(totalDividends1).toFixed(2)));
+        setClaimEthSharePercent(totalDividends1 ==  "0." ? (0).toFixed(5) : (parseInt(withdrawableDividends1) * 100.0 / parseInt(totalDividends1)).toFixed(4));
       }
 
       const getClaimData = async () => {
@@ -151,7 +173,7 @@ function ClaimRewards () {
                 <button className="px-4 py-1 mt-4 text-sm font-medium text-white claim_eth_box hover:cursor-auto rounded-xl">
                   YOUR % OF CLAIM
                 </button>
-                <p className='mt-5 ml-3 text-xl font-bold text-left text-white'>{ethSharePercent}%</p>
+                <p className='mt-5 ml-3 text-xl font-bold text-left text-white'>{claimEthSharePercent}%</p>
               </div>
             </div>
             <div className='border border-gray-500 bg-[#161226] rounded-xl h-[150px] w-2/3 md:w-[220px] p-2'>
@@ -159,7 +181,7 @@ function ClaimRewards () {
                 <button className="px-4 py-1 mt-4 text-sm font-medium text-white claim_eth_box hover:cursor-auto rounded-xl">
                   YOUR SHARE OF ETH
                 </button>
-                <p className='mt-5 ml-3 text-xl font-bold text-left text-white'>{ethShare} ETH</p>
+                <p className='mt-5 ml-3 text-xl font-bold text-left text-white'>{claimEthShare} ETH</p>
               </div>
             </div>
             <div className='border border-gray-500 bg-[#161226] rounded-xl h-[150px] w-2/3 md:w-[220px] p-2'>
@@ -173,10 +195,10 @@ function ClaimRewards () {
           </div>
           { account.address && (
             <div className="flex flex-col sm:flex-row">
-              <button onClick={() => write({functionName: "claim"})} className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+              <button onClick={() => write2({functionName: "claim", args: [account.address, false, 0]})} className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
                 Claim Your ETH
               </button>
-              <button className="w-[250px] min-w-400 md:text-xl text-lg md:ml-7 ml-0 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+              <button onClick={() => write2({functionName: "claim", args: [account.address, true, 0]})} className="w-[250px] min-w-400 md:text-xl text-lg md:ml-7 ml-0 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
                 REINVEST
               </button>
             </div>
@@ -221,7 +243,7 @@ function ClaimRewards () {
                 </div>
               </div>
               <div className="flex items-center justify-center w-full">
-                <button className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+                <button onClick={() => write1({functionName: "claim"})} className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
                   Claim Your ETH
                 </button>
               </div>
