@@ -25,6 +25,7 @@ function ClaimRewards () {
     const [claimEthShare, setClaimEthShare] = useState("0");
     const [claimEthSharePercent, setClaimEthSharePercent] = useState("0");
     const [totalEth, setTotalEth] = useState(0);
+    const [claimTotalEth, setClaimTotalEth] = useState(0);
     const [legacyOpen, setLegacyOpen] = useState(0);
 
     const { data: data1, isLoading: isLoading1, isSuccess: isSuccess1, write: write1 } = useContractWrite({
@@ -44,11 +45,31 @@ function ClaimRewards () {
       args : [account.address]
     });
 
+    const tokenBalance = useContractRead({
+      address: ContractAddress,
+      abi: ContractABI,
+      functionName : 'balanceOf',
+      args : [account.address]
+    });
+
     const claimContractread = useContractRead({
       address: ClaimContractAddress,
       abi: ClaimContractABI,
       functionName : 'accountData',
       args : [account.address]
+    });
+
+    const claimTokenBalance = useContractRead({
+      address: ClaimContractAddress,
+      abi: ClaimContractABI,
+      functionName : 'balanceOf',
+      args : [account.address]
+    });
+
+    const totalSupply = useContractRead({
+      address: ClaimContractAddress,
+      abi: ClaimContractABI,
+      functionName : 'totalSupply'
     });
     
     if(account.address == undefined && legacyOpen == 1) {
@@ -69,7 +90,6 @@ function ClaimRewards () {
           let cnt = 0;
           if(subscrStr == undefined || subscrStr[i] == undefined || subscrStr[i] == null)
             break;
-          console.log(subscrStr);
           if(subscrStr[i - 1].codePointAt(0) >= '₀'.codePointAt(0) && subscrStr[i - 1].codePointAt(0) <= '₀'.codePointAt(0) + 9) {
             cnt = (subscrStr[i - 1].codePointAt(0) - '₀'.codePointAt(0)) * 9;
           }
@@ -86,26 +106,32 @@ function ClaimRewards () {
 
     useEffect(() => {
       if(account.address && contractread.isSuccess) {
-        const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
+        const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');        
+
         const withdrawableDividends = web3.utils.fromWei(contractread.data[0], 'ether');
-        const totalDividends = web3.utils.fromWei(contractread.data[1], 'ether');
+        const withdrawableDividends1 = web3.utils.fromWei(claimContractread.data[1], 'ether');
 
-        const withdrawableDividends1 = web3.utils.fromWei(claimContractread.data[0], 'ether');
-        const totalDividends1 = web3.utils.fromWei(claimContractread.data[1], 'ether');
-  
-        setEthShare(stringToNumber(parseFloat(totalDividends).toFixed(2)));
-        setEthSharePercent(totalDividends ==  "0." ? (0).toFixed(5) : (parseInt(withdrawableDividends) * 100.0 / parseInt(totalDividends)).toFixed(4));
+        const tokenBalanceData = web3.utils.fromWei(tokenBalance.data, 'ether');
+        const claimTokenBalanceData = web3.utils.fromWei(claimTokenBalance.data, 'ether');
+        const claimTotalSupply = web3.utils.fromWei(totalSupply.data, 'ether');
 
-        setClaimEthShare(stringToNumber(parseFloat(totalDividends1).toFixed(2)));
-        setClaimEthSharePercent(totalDividends1 ==  "0." ? (0).toFixed(5) : (parseInt(withdrawableDividends1) * 100.0 / parseInt(totalDividends1)).toFixed(4));
+        setEthShare(stringToNumber(parseFloat(withdrawableDividends).toFixed(3)));  //Legacy WithdrawableDividends
+        setEthSharePercent((parseFloat(tokenBalanceData) / 10000).toFixed(5)); //Legacy Token Balance
+
+        setClaimEthShare(stringToNumber(parseFloat(withdrawableDividends1).toFixed(3)));  //Claim WithdrawableDividends
+        setClaimEthSharePercent((parseFloat(claimTokenBalanceData) / parseFloat(claimTotalSupply)).toFixed(5)); //Claim Token Balance
       }
 
       const getClaimData = async () => {
         const web3 = new Web3('https://mainnet.infura.io/v3/19affef0dbd140e0aca95546e1c5bdd0');
         const totalEth = await web3.eth.getBalance("0x93314Ee69BF8F943504654f9a8ECed0071526439");
+        const totalEth1 = await web3.eth.getBalance("0xe1B9f11aA79cb64AcaC94Ea021Ca800AEF6964F1");
 
         const totalEthString = web3.utils.fromWei(totalEth, 'ether');
-        setTotalEth(parseFloat(totalEthString).toFixed(2));
+        setTotalEth(parseFloat(totalEthString).toFixed(3));
+
+        const totalEthString1 = web3.utils.fromWei(totalEth1, 'ether');
+        setClaimTotalEth(parseFloat(totalEthString1).toFixed(3));
       };
 
       getClaimData();
@@ -189,7 +215,7 @@ function ClaimRewards () {
                 <button className="w-[150px] text-sm max-w-md mt-4 claim_eth_box hover:cursor-auto text-white font-medium py-1 px-2 rounded-xl">
                   ALL INVESTORS TOTAL DIVS
                 </button>
-                <p className='mt-5 ml-3 text-xl font-bold text-left text-white'>{totalEth} ETH</p>
+                <p className='mt-5 ml-3 text-xl font-bold text-left text-white'>{claimTotalEth} ETH</p>
               </div>
             </div>
           </div>
