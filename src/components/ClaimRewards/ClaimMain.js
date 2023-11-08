@@ -175,15 +175,15 @@ function ClaimRewards () {
                         {(() => {
                             if (!connected) {
                                 return (
-                                    <button className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md" onClick={openConnectModal} type="button">
+                                    <button className="w-[230px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md" onClick={openConnectModal} type="button">
                                         Connect Wallet
                                     </button>
                                 );
                             }
                             return (
                                 <div style={{ display: 'flex', gap: 12 }}>
-                                    <button className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md" onClick={openAccountModal} type="button">
-                                        Disconnect
+                                    <button className="border border-[#A58ED7] w-[230px] md:text-xl text-lg mb-12 bg-transparent hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#D8CEF9] font-semibold py-3 px-6 rounded-md" onClick={openAccountModal} type="button">
+                                        Disconnect Wallet
                                     </button>
                                 </div>
                             );
@@ -224,8 +224,8 @@ function ClaimRewards () {
               <button onClick={() => write2({functionName: "claim", args: [account.address, false, 0]})} className="w-[250px] md:text-xl text-lg mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
                 Claim Your ETH
               </button>
-              <button onClick={() => write2({functionName: "claim", args: [account.address, true, 0]})} className="w-[250px] min-w-400 md:text-xl text-lg md:ml-7 ml-0 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
-                REINVEST
+              <button onClick={() => write2({functionName: "claim", args: [account.address, true, 0]})} className="[w-[250px] min-w-400 md:text-xl text-lg md:ml-7 ml-0 mb-12 bg-gradient-to-br from-[#D8CEF9] to-[#A58ED7] hover:translate-y-[-10px] transition-transform duration-700 ease-in-out text-[#241357] font-semibold py-3 px-10 rounded-md">
+                Reinvest
               </button>
             </div>
             )
